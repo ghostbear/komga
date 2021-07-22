@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadlistRecord
@@ -30,7 +31,7 @@ class ReadListDao(
   private val b = Tables.BOOK
 
   private val sorts = mapOf(
-    "name" to DSL.lower(rl.NAME.udfStripAccents())
+    "name" to rl.NAME.collate(SqliteUdfDataSource.collationUnicode3)
   )
 
   override fun findByIdOrNull(readListId: String): ReadList? =

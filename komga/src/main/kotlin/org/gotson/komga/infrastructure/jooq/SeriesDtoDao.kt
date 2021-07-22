@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
@@ -74,7 +75,7 @@ class SeriesDtoDao(
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
     "lastModified" to s.LAST_MODIFIED_DATE,
     "collection.number" to cs.NUMBER,
-    "name" to lower(s.NAME.udfStripAccents()),
+    "name" to s.NAME.collate(SqliteUdfDataSource.collationUnicode3),
     "booksCount" to s.BOOK_COUNT,
   )
 

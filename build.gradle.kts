@@ -22,6 +22,7 @@ fun isNonStable(version: String): Boolean {
 allprojects {
   repositories {
     mavenCentral()
+    mavenLocal()
   }
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
   apply(plugin = "com.github.ben-manes.versions")

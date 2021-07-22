@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.CollectionRecord
@@ -29,7 +30,7 @@ class SeriesCollectionDao(
   private val s = Tables.SERIES
 
   private val sorts = mapOf(
-    "name" to DSL.lower(c.NAME.udfStripAccents())
+    "name" to c.NAME.collate(SqliteUdfDataSource.collationUnicode3)
   )
 
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =

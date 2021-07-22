@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
@@ -45,7 +46,7 @@ class BookDtoDao(
   private val bt = Tables.BOOK_METADATA_TAG
 
   private val sorts = mapOf(
-    "name" to lower(b.NAME.udfStripAccents()),
+    "name" to b.NAME.collate(SqliteUdfDataSource.collationUnicode3),
     "created" to b.CREATED_DATE,
     "createdDate" to b.CREATED_DATE,
     "lastModified" to b.LAST_MODIFIED_DATE,
@@ -56,8 +57,8 @@ class BookDtoDao(
     "media.status" to lower(m.STATUS),
     "media.comment" to lower(m.COMMENT),
     "media.mediaType" to lower(m.MEDIA_TYPE),
+    "metadata.title" to d.TITLE.collate(SqliteUdfDataSource.collationUnicode3),
     "metadata.numberSort" to d.NUMBER_SORT,
-    "metadata.title" to lower(d.TITLE.udfStripAccents()),
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
     "readList.number" to rlb.NUMBER
